@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 void main() {
@@ -9,18 +9,31 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   double textSize = 24;
+
   Color? primeColor = Colors.grey[300];
+
   Color? secondColor = HexColor("#FE024F");
+
+  Color? bgColor = HexColor("#12141f");
+
+  Color? bgDrawerColor = HexColor("#171a2e");
+
   Widget _sizebox(int height) {
     return SizedBox(
       height: height.toDouble(),
@@ -55,18 +68,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            HexColor(
-              "#1c1d24",
-            ),
-            HexColor(
-              "#202329",
-            ),
-          ],
-        ),
-      ),
+      color: bgColor,
       child: Scaffold(
         drawer: Drawer(
           backgroundColor: HexColor(
@@ -79,9 +81,11 @@ class Home extends StatelessWidget {
                     onTap: () {
                       Scaffold.of(context).openDrawer();
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: CircleAvatar(
+                        backgroundColor: secondColor,
+                      ),
                     ),
                   )),
           backgroundColor: Colors.transparent,
@@ -109,11 +113,14 @@ class Home extends StatelessWidget {
               horizontal: 10,
             ),
             children: [
-              _text("Wecome to my world".toUpperCase(), primeColor, 14,
-                  FontWeight.normal, 0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _text("Wecome to my world".toUpperCase(), primeColor, 14,
+                    FontWeight.normal, 0),
+              ),
               _sizebox(20),
-              SizedBox(
-                width: 250,
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: RichText(
                   text: TextSpan(
                     children: [
@@ -198,20 +205,113 @@ class Home extends StatelessWidget {
                 indent: 100,
                 endIndent: 100,
               ),
-              _sizebox(10),
-              Column(
+              _sizebox(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    children: [
-                      Column(
-                        children: [Container()],
-                      )
-                    ],
-                  )
+                  _skillCol("JAVA", 4, "java"),
+                  _skillCol("FLUTTER", 3, "flutter"),
+                  _skillCol("JavaScript".toUpperCase(), 2, "js"),
+                  _skillCol("GitHub".toUpperCase(), 3, "github"),
                 ],
-              )
+              ),
+              _sizebox(20),
+              Center(
+                child: _text(
+                  "Education".toUpperCase(),
+                  primeColor,
+                  16,
+                  FontWeight.bold,
+                  1,
+                ),
+              ),
+              Divider(
+                thickness: 2,
+                color: secondColor?.withOpacity(0.2),
+                indent: 100,
+                endIndent: 100,
+              ),
+              _sizebox(20),
             ]),
       ),
+    );
+  }
+
+  Column _skillCol(skill, int stars, asset) {
+    const int totalStars = 5;
+    int unstars = totalStars - stars;
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: HexColor("#0e0e17"),
+                offset: const Offset(4, 4),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+              BoxShadow(
+                color: HexColor("#181c2e"),
+                offset: const Offset(-4, -4),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+            color: bgColor,
+          ),
+          child: Center(
+            child: Image.asset("assets/$asset.png"),
+          ),
+        ),
+        _sizebox(10),
+        _text(skill, primeColor, 14, FontWeight.bold, 0),
+        _sizebox(5),
+        Row(
+          children: _getAllStars(stars, unstars),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _getAllStars(int star, int unstar) {
+    List<Widget> allStars = [];
+
+    allStars.addAll(_stars(star));
+    allStars.addAll(_unstars(unstar));
+
+    return allStars;
+  }
+
+  List<Widget> _stars(int star) {
+    List<Widget> stars = [];
+
+    for (int i = 1; i <= star; i++) {
+      stars.add(_star(secondColor));
+    }
+
+    return stars;
+  }
+
+  List<Widget> _unstars(int unstar) {
+    List<Widget> stars = [];
+
+    for (int i = 1; i <= unstar; i++) {
+      stars.add(_star(primeColor));
+    }
+
+    return stars;
+  }
+
+  Icon _star(color) {
+    return Icon(
+      Icons.star,
+      size: 15,
+      color: color,
     );
   }
 }
