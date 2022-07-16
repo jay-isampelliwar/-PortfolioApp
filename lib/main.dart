@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:portfolio_app/widgets/my_widgets.dart';
+import 'package:portfolio_app/widgets/skill_column.dart';
+
+import 'constance/app_constance.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,39 +27,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  double textSize = 24;
-
-  Color? primeColor = Colors.grey[300];
-
-  Color? secondColor = HexColor("#FE024F");
-
-  Color? bgColor = HexColor("#12141f");
-
-  Color? bgDrawerColor = HexColor("#171a2e");
-
-  Widget _sizebox(int height) {
-    return SizedBox(
-      height: height.toDouble(),
-    );
-  }
-
-  Widget _text(String text, color, double size, fontWeight, double space,
-      {aligment = TextAlign.left}) {
-    return Text(
-      text,
-      textAlign: aligment,
-      style: TextStyle(
-        color: color,
-        fontWeight: fontWeight,
-        fontSize: size,
-        letterSpacing: space,
-      ),
-    );
-  }
-
   InlineSpan _textSpan(String text, color, double size, fontWeight) {
     return TextSpan(
-      text: text,
+      text: text.toUpperCase(),
       style: TextStyle(
         color: color,
         fontWeight: fontWeight,
@@ -71,30 +44,32 @@ class _HomeState extends State<Home> {
       color: bgColor,
       child: Scaffold(
         drawer: Drawer(
-          backgroundColor: HexColor(
-            "#1c1d24",
-          ),
+          backgroundColor: bgDrawerColor,
         ),
         appBar: AppBar(
           leading: Builder(
-              builder: (context) => GestureDetector(
-                    onTap: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: CircleAvatar(
-                        backgroundColor: secondColor,
-                      ),
-                    ),
-                  )),
+            builder: (context) => GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: CircleAvatar(
+                  backgroundColor: secondColor,
+                ),
+              ),
+            ),
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
             Row(
               children: [
-                _text("Resume".toUpperCase(), primeColor, 18, FontWeight.normal,
-                    0),
+                MyText(
+                  text: "Resume",
+                  color: primeColor,
+                  size: 16,
+                ),
                 IconButton(
                   onPressed: () {},
                   icon: Icon(
@@ -114,30 +89,32 @@ class _HomeState extends State<Home> {
             ),
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _text("Wecome to my world".toUpperCase(), primeColor, 14,
-                    FontWeight.normal, 0),
-              ),
-              _sizebox(20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyText(
+                    color: primeColor,
+                    text: "Welcome to my world",
+                    size: 14,
+                  )),
+              const MyBox(height: 20),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: RichText(
                   text: TextSpan(
                     children: [
                       _textSpan(
-                        "I'm ".toUpperCase(),
+                        "I'm ",
                         primeColor,
                         textSize,
                         FontWeight.bold,
                       ),
                       _textSpan(
-                        "Jay Isampelliwar \n".toUpperCase(),
+                        "John Stamos \n",
                         secondColor,
                         textSize + 6,
                         FontWeight.bold,
                       ),
                       _textSpan(
-                        "Flutter Developer.".toUpperCase(),
+                        "Flutter Developer.",
                         primeColor,
                         textSize,
                         FontWeight.bold,
@@ -146,7 +123,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              _sizebox(10),
+              const MyBox(height: 10),
               Opacity(
                 opacity: 0.3,
                 child: Divider(
@@ -154,164 +131,37 @@ class _HomeState extends State<Home> {
                   color: secondColor,
                 ),
               ),
-              _sizebox(20),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: _text(
-                    "About".toUpperCase(),
-                    primeColor,
-                    16,
-                    FontWeight.bold,
-                    0,
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                color: secondColor?.withOpacity(0.2),
-                indent: 100,
-                endIndent: 100,
-              ),
-              _sizebox(10),
+              const MyBox(height: 20),
+              MyWidget(color: primeColor, text: "About"),
               Center(
                 child: SizedBox(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: _text(
-                        "Seeking opportunities at an entny level position to contribute my skills in a challenging environment in a firm driven by technology."
-                            .toUpperCase(),
-                        primeColor,
-                        14,
-                        FontWeight.normal,
-                        1,
-                        aligment: TextAlign.center),
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: MyText(
+                        aligment: TextAlign.center,
+                        text:
+                            "Seeking opportunities at an entny level position to contribute my skills in a challenging environment in a firm driven by technology.",
+                        color: primeColor,
+                        size: 14,
+                      )),
                 ),
               ),
-              _sizebox(20),
-              Center(
-                child: _text(
-                  "Skills".toUpperCase(),
-                  primeColor,
-                  16,
-                  FontWeight.bold,
-                  1,
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                color: secondColor?.withOpacity(0.2),
-                indent: 100,
-                endIndent: 100,
-              ),
-              _sizebox(20),
+              const MyBox(height: 20),
+              MyWidget(color: primeColor, text: "Skills"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _skillCol("JAVA", 4, "java"),
-                  _skillCol("FLUTTER", 3, "flutter"),
-                  _skillCol("JavaScript".toUpperCase(), 2, "js"),
-                  _skillCol("GitHub".toUpperCase(), 3, "github"),
+                  SkillColumn(skill: "Java", star: 4, asset: "java"),
+                  SkillColumn(skill: "FLUTTER", star: 3, asset: "flutter"),
+                  SkillColumn(skill: "JavaScript", star: 2, asset: "js"),
+                  SkillColumn(skill: "GitHub", star: 3, asset: "github"),
                 ],
               ),
-              _sizebox(20),
-              Center(
-                child: _text(
-                  "Education".toUpperCase(),
-                  primeColor,
-                  16,
-                  FontWeight.bold,
-                  1,
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                color: secondColor?.withOpacity(0.2),
-                indent: 100,
-                endIndent: 100,
-              ),
-              _sizebox(20),
+              const MyBox(height: 20),
+              MyWidget(color: primeColor, text: "Education"),
+              const MyBox(height: 20),
             ]),
       ),
-    );
-  }
-
-  Column _skillCol(skill, int stars, asset) {
-    const int totalStars = 5;
-    int unstars = totalStars - stars;
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: HexColor("#0e0e17"),
-                offset: const Offset(4, 4),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-              BoxShadow(
-                color: HexColor("#181c2e"),
-                offset: const Offset(-4, -4),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
-            color: bgColor,
-          ),
-          child: Center(
-            child: Image.asset("assets/$asset.png"),
-          ),
-        ),
-        _sizebox(10),
-        _text(skill, primeColor, 14, FontWeight.bold, 0),
-        _sizebox(5),
-        Row(
-          children: _getAllStars(stars, unstars),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> _getAllStars(int star, int unstar) {
-    List<Widget> allStars = [];
-
-    allStars.addAll(_stars(star));
-    allStars.addAll(_unstars(unstar));
-
-    return allStars;
-  }
-
-  List<Widget> _stars(int star) {
-    List<Widget> stars = [];
-
-    for (int i = 1; i <= star; i++) {
-      stars.add(_star(secondColor));
-    }
-
-    return stars;
-  }
-
-  List<Widget> _unstars(int unstar) {
-    List<Widget> stars = [];
-
-    for (int i = 1; i <= unstar; i++) {
-      stars.add(_star(primeColor));
-    }
-
-    return stars;
-  }
-
-  Icon _star(color) {
-    return Icon(
-      Icons.star,
-      size: 15,
-      color: color,
     );
   }
 }
