@@ -30,7 +30,6 @@ class MyWidget extends StatelessWidget {
             endIndent: 100,
           ),
         ),
-        const MyBox(height: 10),
       ],
     );
   }

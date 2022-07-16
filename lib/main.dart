@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_app/widgets/education.dart';
+import 'package:portfolio_app/widgets/inline_span.dart';
 import 'package:portfolio_app/widgets/my_widgets.dart';
 import 'package:portfolio_app/widgets/skill_column.dart';
-
 import 'constance/app_constance.dart';
 
 void main() {
@@ -12,9 +13,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      theme: ThemeData(useMaterial3: true),
+      home: const Home(),
     );
   }
 }
@@ -27,16 +29,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  InlineSpan _textSpan(String text, color, double size, fontWeight) {
-    return TextSpan(
-      text: text.toUpperCase(),
-      style: TextStyle(
-        color: color,
-        fontWeight: fontWeight,
-        fontSize: size.toDouble(),
-      ),
-    );
-  }
+  InlineSpanText inlineSpanText = InlineSpanText();
 
   @override
   Widget build(BuildContext context) {
@@ -101,19 +94,19 @@ class _HomeState extends State<Home> {
                 child: RichText(
                   text: TextSpan(
                     children: [
-                      _textSpan(
+                      inlineSpanText.textSpan(
                         "I'm ",
                         primeColor,
                         textSize,
                         FontWeight.bold,
                       ),
-                      _textSpan(
+                      inlineSpanText.textSpan(
                         "John Stamos \n",
                         secondColor,
                         textSize + 6,
                         FontWeight.bold,
                       ),
-                      _textSpan(
+                      inlineSpanText.textSpan(
                         "Flutter Developer.",
                         primeColor,
                         textSize,
@@ -133,6 +126,7 @@ class _HomeState extends State<Home> {
               ),
               const MyBox(height: 20),
               MyWidget(color: primeColor, text: "About"),
+              const MyBox(height: 10),
               Center(
                 child: SizedBox(
                   child: Padding(
@@ -142,12 +136,13 @@ class _HomeState extends State<Home> {
                         text:
                             "Seeking opportunities at an entny level position to contribute my skills in a challenging environment in a firm driven by technology.",
                         color: primeColor,
-                        size: 14,
+                        size: 16,
                       )),
                 ),
               ),
               const MyBox(height: 20),
               MyWidget(color: primeColor, text: "Skills"),
+              const MyBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -159,7 +154,24 @@ class _HomeState extends State<Home> {
               ),
               const MyBox(height: 20),
               MyWidget(color: primeColor, text: "Education"),
-              const MyBox(height: 20),
+              const MyBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Education(
+                  schoolName: "Computer Science Engineering \n",
+                  timePeriod: "2020 - Current",
+                  degree: "B.tech",
+                  current: true,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Education(
+                  schoolName: "Computer Science Engineering \n",
+                  timePeriod: "2018 - 2020",
+                  degree: "Diploma",
+                ),
+              ),
             ]),
       ),
     );
