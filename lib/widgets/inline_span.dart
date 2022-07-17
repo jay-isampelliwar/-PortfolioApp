@@ -7,7 +7,7 @@ class InlineSpanText {
       style: TextStyle(
         color: color,
         fontWeight: fontWeight,
-        fontSize: size.toDouble(),
+        fontSize: size,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:portfolio_app/widgets/education.dart';
 import 'package:portfolio_app/widgets/inline_span.dart';
 import 'package:portfolio_app/widgets/my_widgets.dart';
@@ -28,8 +29,19 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   InlineSpanText inlineSpanText = InlineSpanText();
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,34 +57,30 @@ class _HomeState extends State<Home> {
               onTap: () {
                 Scaffold.of(context).openDrawer();
               },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20),
                 child: CircleAvatar(
-                  backgroundColor: secondColor,
+                  backgroundImage: AssetImage(
+                    "assets/profile.jpeg",
+                  ),
                 ),
               ),
             ),
           ),
-          backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
-            Row(
-              children: [
-                MyText(
-                  text: "Resume",
-                  color: primeColor,
-                  size: 16,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.download_rounded,
-                    color: primeColor,
-                  ),
-                ),
-              ],
-            )
+            IconButton(
+              splashColor: Colors.white.withOpacity(0.1),
+              splashRadius: 10,
+              padding: const EdgeInsets.only(right: 10),
+              onPressed: () {},
+              icon: Icon(
+                Icons.share,
+                color: primeColor,
+              ),
+            ),
           ],
+          backgroundColor: Colors.transparent,
         ),
         backgroundColor: Colors.transparent,
         body: ListView(
@@ -172,8 +180,92 @@ class _HomeState extends State<Home> {
                   degree: "Diploma",
                 ),
               ),
+              const MyBox(height: 10),
+              GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  if (details.delta.dy < 0) {
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return showButtomSheet(bgDrawerColor);
+                        });
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.transparent,
+                  child: Column(children: [
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Lottie.asset("assets/lottie/swipeup.json"),
+                    ),
+                    const MyBox(height: 10),
+                    MyText(
+                      text: "Projects",
+                      color: primeColor,
+                      size: 16,
+                      fontWeight: FontWeight.bold,
+                    )
+                  ]),
+                ),
+              ),
             ]),
       ),
     );
   }
+}
+
+Widget showButtomSheet(Color? bgDrawerColor) {
+  return Container(
+    padding: const EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      color: bgDrawerColor,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+    ),
+    child: Column(children: [
+      MyText(
+        text: "Tap to visit Github",
+        color: primeColor,
+        size: 20,
+        fontWeight: FontWeight.w800,
+        space: 1.2,
+      ),
+      const MyBox(
+        height: 30,
+      ),
+      Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ProjectBlock(projectName: "Snake game"),
+              ProjectBlock(projectName: 'Bmi App'),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ProjectBlock(projectName: "Tic toc toe"),
+              ProjectBlock(projectName: "Portfolio App"),
+            ],
+          ),
+        ],
+      ),
+      const MyBox(height: 50),
+      GestureDetector(
+        onTap: () {},
+        child: Center(
+            child: SizedBox(
+          height: 100,
+          width: 100,
+          child: Lottie.asset("assets/lottie/github.json"),
+        )),
+      )
+    ]),
+  );
 }

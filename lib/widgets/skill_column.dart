@@ -7,6 +7,7 @@ class SkillColumn extends StatelessWidget {
   String asset;
   int star;
   String skill;
+
   SkillColumn({required this.skill, required this.star, required this.asset});
   @override
   Widget build(BuildContext context) {
